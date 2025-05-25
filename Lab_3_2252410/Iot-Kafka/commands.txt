@@ -7,3 +7,6 @@ opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server broker-1:9092,broker-
 mvn exec:java -Dexec.mainClass="com.iot.IotProducer"
 
 mvn exec:java -Dexec.mainClass="com.iot.IotConsumer"
+
+mvn exec:java -Dexec.mainClass="com.iot.SensorImputerApplication" 
+

@@ -1,0 +1,9 @@
+opt/kafka/bin/kafka-topics.sh --bootstrap-server broker-1:9092,broker-2:9092 --create --topic water --partitions 3 --replication-factor 2
+
+opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server broker-1:9092,broker-2:9092 --topic air --partition 0 --from-beginning
+
+
+
+mvn exec:java -Dexec.mainClass="com.iot.IotProducer"
+
+mvn exec:java -Dexec.mainClass="com.iot.IotConsumer"

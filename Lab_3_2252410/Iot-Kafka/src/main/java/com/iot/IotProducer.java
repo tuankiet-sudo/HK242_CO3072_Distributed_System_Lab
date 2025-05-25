@@ -22,7 +22,7 @@ public class IotProducer {
 
     public static void main(String[] args) {
         Properties props = new Properties();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.182.133:9092");
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.182.128:9092");
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "com.iot.IoTSerializer");
         props.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, "com.iot.StationPartitioner");
@@ -33,7 +33,7 @@ public class IotProducer {
 
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(folderPath, "reversed_AIR2301.csv")) {
             for (Path filePath : stream) {
-                processFile(filePath, "air-test1", producer);
+                processFile(filePath, "air", producer);
             }
         } catch (IOException e) {
             e.printStackTrace();

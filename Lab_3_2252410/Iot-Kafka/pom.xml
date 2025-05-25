@@ -33,12 +33,12 @@
     <!-- Import Kafka Clients for Producer and Consumer Implementation -->
       <groupId>org.apache.kafka</groupId>
       <artifactId>kafka-clients</artifactId>
-      <version>3.8.1</version>
+      <version>4.0.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.kafka</groupId>
       <artifactId>kafka-streams</artifactId>
-      <version>3.8.1</version>
+      <version>4.0.0</version>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -61,6 +61,10 @@
       <artifactId>jackson-datatype-jsr310</artifactId>
       <version>2.18.2</version>
     </dependency>
+    <dependency>
+    <groupId>org.slf4j</groupId>
+    <artifactId>slf4j-simple</artifactId>
+    <version>2.0.13</version> </dependency>
   </dependencies>
 
   <build>
@@ -134,7 +138,7 @@
                     <goal>java</goal>
                   </goals>
                   <configuration>
-                    <mainClass>com.iot.ImputerApp</mainClass>
+                    <mainClass>com.iot.SensorImputerApplication</mainClass>
                   </configuration>
                 </execution>
             </executions>
