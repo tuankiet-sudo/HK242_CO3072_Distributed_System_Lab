@@ -1,0 +1,10 @@
+com\iot\ProducerTask.class
+com\iot\IoTDeserializer.class
+com\iot\Earth.class
+com\iot\ConsumerTask.class
+com\iot\IotConsumer.class
+com\iot\Air.class
+com\iot\IotProducer.class
+com\iot\IoTSerializer.class
+com\iot\StationPartitioner.class
+com\iot\Water.class
