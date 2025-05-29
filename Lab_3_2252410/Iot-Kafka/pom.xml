@@ -141,6 +141,15 @@
                     <mainClass>com.iot.SensorImputerApplication</mainClass>
                   </configuration>
                 </execution>
+                <execution>
+                  <id>replicate-air-imputed</id>
+                  <goals>
+                    <goal>java</goal>
+                  </goals>
+                  <configuration>
+                    <mainClass>com.iot.ImputedAirReplicator</mainClass>
+                  </configuration>
+                </execution>
             </executions>
         </plugin>
       </plugins>

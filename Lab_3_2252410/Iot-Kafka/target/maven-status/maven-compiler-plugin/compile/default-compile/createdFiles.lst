@@ -15,6 +15,7 @@ com\iot\IotSerde.class
 com\iot\StatsSerde.class
 com\iot\IotConsumer.class
 com\iot\StatsStoreBuilder.class
+com\iot\ImputedAirReplicator.class
 com\iot\SensorImputerApplication$1.class
 com\iot\SensorImputerApplication.class
 com\iot\IotProducer.class

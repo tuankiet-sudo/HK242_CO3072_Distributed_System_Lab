@@ -10,19 +10,22 @@ import org.apache.kafka.streams.errors.DefaultProductionExceptionHandler;
 import org.apache.kafka.streams.processor.api.Processor;
 import org.apache.kafka.streams.processor.api.ProcessorSupplier;
 import org.apache.kafka.streams.state.StoreBuilder;
-
+import org.apache.kafka.clients.consumer.ConsumerConfig; // Re-adding for auto.offset.reset
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicBoolean; // Already imported in your provided code
 
 public class SensorImputerApplication {
 
     private static final String APP_ID_PREFIX = "iot-sensor-imputer-app-";
-    private static final String DEFAULT_BOOTSTRAP_SERVERS = "192.168.182.128:9092"; // Replace if needed
-    private static final String STATS_STORE_NAME = "SensorFieldStatsStore"; // Ensure this matches in ImputerProcessor
+    private static final String DEFAULT_BOOTSTRAP_SERVERS = "192.168.182.128:9092"; // As per your last code snippet
+    private static final String STATS_STORE_NAME = "SensorFieldStatsStore";
+
+    private static final AtomicBoolean running = new AtomicBoolean(true); // Already present
 
     public static void main(String[] args) {
         if (args.length < 1) {
@@ -47,6 +50,9 @@ public class SensorImputerApplication {
         
         props.put(StreamsConfig.DESERIALIZATION_EXCEPTION_HANDLER_CLASS_CONFIG, LogAndContinueExceptionHandler.class.getName());
         props.put(StreamsConfig.PRODUCTION_EXCEPTION_HANDLER_CLASS_CONFIG, DefaultProductionExceptionHandler.class.getName());
+        
+        // Re-adding this for robust consumption, as discussed previously
+        props.put(StreamsConfig.consumerPrefix(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG), "earliest");
 
         Topology topology = new Topology();
 
@@ -102,8 +108,8 @@ public class SensorImputerApplication {
         Runtime.getRuntime().addShutdownHook(new Thread("streams-shutdown-hook") {
             @Override
             public void run() {
-                // Try printing to System.err
                 System.err.println("Closing Kafka Streams application (Shutdown Hook)..."); 
+                running.set(false);
                 streams.close();
                 latch.countDown();
             }
@@ -116,15 +122,19 @@ public class SensorImputerApplication {
             streams.start();
             System.out.println("SensorImputerApplication started. Consuming from " + inputTopic +
                                ", producing to " + outputTopic + ".");
-            latch.await();
+            latch.await(); // Main thread blocks here until latch is counted down
         } catch (Throwable e) {
             System.err.println("Unhandled exception in SensorImputerApplication: " + e.getMessage());
             e.printStackTrace();
             System.exit(1);
         } finally {
+            // This block executes when latch.await() returns or if an exception occurs
+            System.err.println("SensorImputerApplication entering finally block. Current running state: " + running.get());
             if (streams.state().isRunningOrRebalancing()) {
+                System.err.println("SensorImputerApplication finally block: streams still running/rebalancing, ensuring close...");
                 streams.close();
             }
+            System.err.println("SensorImputerApplication main thread exiting.");
         }
         System.exit(0);
     }
